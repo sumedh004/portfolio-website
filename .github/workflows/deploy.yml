@@ -75,7 +75,7 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl apply -f k8s/ -n portfolio
+          kubectl apply -f k3s/ -n portfolio
           kubectl set image deployment/portfolio \
             portfolio=${{ env.IMAGE_NAME }}:sha-${{ steps.sha.outputs.short }} \
             -n portfolio
