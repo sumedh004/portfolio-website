@@ -17,4 +17,4 @@ spec:
               service:
                 name: portfolio
                 port:
-                  number: 32080 
+                  number: 30080 
