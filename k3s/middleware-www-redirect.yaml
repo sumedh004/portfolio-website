@@ -1,0 +1,10 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: www-redirect
+  namespace: portfolio
+spec:
+  redirectRegex:
+    regex: "^https?://www\\.(.*)"
+    replacement: "http://${1}"
+    permanent: true

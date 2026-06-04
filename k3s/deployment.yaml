@@ -3,6 +3,9 @@ kind: Deployment
 metadata:
   name: portfolio
   namespace: portfolio
+  labels:
+    app: portfolio
+    version: "1.0"
 spec:
   replicas: 2
   selector:
@@ -11,8 +14,8 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 0
+      maxSurge: 1        # at most 1 extra pod during rollout
+      maxUnavailable: 0  # never take a pod down before a new one is ready
   template:
     metadata:
       labels:
@@ -20,11 +23,21 @@ spec:
     spec:
       imagePullSecrets:
         - name: ghcr-secret
+      # Spread pods across both nodes for resilience
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: portfolio
       containers:
         - name: portfolio
           image: ghcr.io/sumedh004/portfolio:latest
           ports:
             - containerPort: 80
+              name: http
+          # Resource limits — sized for nginx serving static files on ARM
           resources:
             requests:
               cpu: 50m
@@ -32,15 +45,25 @@ spec:
             limits:
               cpu: 200m
               memory: 64Mi
+          # Liveness probe: if this fails, K3s restarts the pod
           livenessProbe:
             httpGet:
               path: /healthz
               port: 80
             initialDelaySeconds: 5
-            periodSeconds: 10
+            periodSeconds: 15
+            failureThreshold: 3
+          # Readiness probe: pod only receives traffic when this passes
           readinessProbe:
             httpGet:
               path: /healthz
               port: 80
             initialDelaySeconds: 3
             periodSeconds: 5
+            failureThreshold: 2
+          # Graceful shutdown — nginx finishes in-flight requests
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/sh", "-c", "sleep 5"]
+      terminationGracePeriodSeconds: 30

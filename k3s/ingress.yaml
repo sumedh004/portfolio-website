@@ -3,12 +3,12 @@ kind: Ingress
 metadata:
   name: portfolio
   namespace: portfolio
-  # annotations:
-  #   kubernetes.io/ingress.class: "traefik"
+  annotations:
+    traefik.ingress.kubernetes.io/router.middlewares: portfolio-www-redirect@kubernetescrd
 spec:
   ingressClassName: "traefik"
   rules:
-    - host: 152.67.109.202.nip.io
+    - host: sumedhvartak.pp.ua
       http:
         paths:
           - path: /
@@ -17,4 +17,14 @@ spec:
               service:
                 name: portfolio
                 port:
-                  number: 80 
+                  name: http
+    - host: www.sumedhvartak.pp.ua
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: portfolio
+                port:
+                  name: http
