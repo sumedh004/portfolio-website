@@ -9,9 +9,7 @@ metadata:
     kubernetes.io/ingress.class: "traefik"
     # This annotation triggers cert-manager to issue a certificate
     cert-manager.io/cluster-issuer: "letsencrypt-production"
-    traefik.ingress.kubernetes.io/router.middlewares: >-
-      portfolio-https-redirect@kubernetescrd,
-      portfolio-www-redirect@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: "portfolio-https-redirect@kubernetescrd,portfolio-www-redirect@kubernetescrd"
 spec:
   tls:
     - hosts:
