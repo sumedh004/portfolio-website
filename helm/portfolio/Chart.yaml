@@ -1,0 +1,13 @@
+apiVersion: v2
+name: portfolio
+description: Personal portfolio site — nginx on K3s with Traefik ingress and TLS
+type: application
+version: 0.1.0
+appVersion: "latest"
+keywords:
+  - portfolio
+  - nginx
+  - kubernetes
+maintainers:
+  - name: Sumedh
+    email: sumedhvartak1999@gmail.com

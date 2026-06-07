@@ -1,0 +1,56 @@
+replicaCount: 2
+
+image:
+  repository: ghcr.io/sumedh004/portfolio
+  tag: latest
+  pullPolicy: IfNotPresent
+
+imagePullSecrets:
+  - name: ghcr-secret
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: traefik
+  host: sumedhvartak.pp.ua
+  wwwHost: www.sumedhvartak.pp.ua
+  tls:
+    enabled: true
+    secretName: portfolio-tls
+    clusterIssuer: letsencrypt-production
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 32Mi
+  limits:
+    cpu: 200m
+    memory: 64Mi
+
+livenessProbe:
+  path: /healthz
+  initialDelaySeconds: 5
+  periodSeconds: 15
+  failureThreshold: 3
+
+readinessProbe:
+  path: /healthz
+  initialDelaySeconds: 3
+  periodSeconds: 5
+  failureThreshold: 2
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+
+topologySpread:
+  enabled: true
+
+autoscaling:
+  enabled: false
