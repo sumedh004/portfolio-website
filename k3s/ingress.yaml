@@ -3,10 +3,22 @@ kind: Ingress
 metadata:
   name: portfolio
   namespace: portfolio
+  labels:
+    app: portfolio
   annotations:
-    traefik.ingress.kubernetes.io/router.middlewares: portfolio-www-redirect@kubernetescrd
+    kubernetes.io/ingress.class: "traefik"
+    # This annotation triggers cert-manager to issue a certificate
+    cert-manager.io/cluster-issuer: "letsencrypt-production"
+    traefik.ingress.kubernetes.io/router.middlewares: >-
+      portfolio-https-redirect@kubernetescrd,
+      portfolio-www-redirect@kubernetescrd
 spec:
-  ingressClassName: "traefik"
+  tls:
+    - hosts:
+        - sumedhvartak.pp.ua
+        - www.sumedhvartak.pp.ua
+      # cert-manager will create this Secret with the TLS cert and key
+      secretName: portfolio-tls
   rules:
     - host: sumedhvartak.pp.ua
       http:
