@@ -59,9 +59,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: azure/setup-kubectl@v3
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
         with:
           version: 'v1.35.5'
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: 'v3.14.0'
 
       - name: Configure kubeconfig
         run: |
@@ -73,16 +79,21 @@ jobs:
         id: sha
         run: echo "short=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
 
-      - name: Deploy to Kubernetes
+      - name: Deploy via Helm
         run: |
-          kubectl apply -f k3s/ -n portfolio
-          kubectl set image deployment/portfolio \
-            portfolio=${{ env.IMAGE_NAME }}:sha-${{ steps.sha.outputs.short }} \
-            -n portfolio
-          kubectl rollout status deployment/portfolio \
-            -n portfolio --timeout=180s
+          helm upgrade --install portfolio helm/portfolio/ \
+            --namespace portfolio \
+            --create-namespace \
+            --set image.tag=sha-${{ steps.sha.outputs.short }} \
+            --set ingress.host=sumedhvartak.pp.ua \
+            --set ingress.wwwHost=www.sumedhvartak.pp.ua \
+            --wait \
+            --timeout 3m \
+            --atomic
+
 
       - name: Verify
         run: |
+          helm list -n portfolio
           kubectl get pods -n portfolio
-          kubectl get svc -n portfolio
+          curl -sf https://sumedhvartak.pp.ua/healthz
