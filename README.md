@@ -37,18 +37,17 @@ all at zero cost on Oracle Cloud Always Free.
 
 Every push to `main` triggers this pipeline (typical run: ~90 seconds):
 
-\`\`\`
+```
 git push
   └─► GitHub Actions
         ├─ docker buildx build --platform linux/arm64
-        ├─ docker push → ghcr.io/YOURUSERNAME/portfolio:sha-XXXXXXX
+        ├─ docker push → ghcr.io/sumedh004/portfolio:sha-XXXXXXX
         └─ helm upgrade --install --atomic
               ├─ kubectl applies Deployment, Service, Ingress, PDB
               ├─ RollingUpdate: maxSurge=1, maxUnavailable=0
               ├─ Waits for readinessProbe (/healthz) on all pods
               └─ Auto-rollback via --atomic if deploy fails
-\`\`\`
-
+```
 ---
 
 ## Key engineering decisions
@@ -69,7 +68,7 @@ parameterise values (image tag, domain, replica count) without editing
 manifests. Every deploy is a versioned, auditable release.
 
 **Why cert-manager over manual TLS?**
-Certificates auto-renew — zero operational toil. The 90-day Let's Encrypt
+Certificates auto-renew - zero operational toil. The 90-day Let's Encrypt
 cycle is handled entirely by cert-manager watching the Certificate resource
 and re-running the ACME HTTP-01 challenge before expiry.
 
@@ -77,7 +76,7 @@ and re-running the ACME HTTP-01 challenge before expiry.
 
 ## Repo structure
 
-\`\`\`
+```
 portfolio/
 ├── .github/workflows/deploy.yml  # CI/CD — build and deploy pipeline
 ├── helm/portfolio/               # Helm chart
@@ -89,34 +88,33 @@ portfolio/
 ├── style.css
 ├── nginx.conf                    # /healthz + /nginx_status endpoints
 └── Dockerfile                    # Multi-stage, nginx:alpine, linux/arm64
-\`\`\`
+```
 
 ---
 
 ## Running locally
 
-\`\`\`bash
+```bash
 docker build -t portfolio:local .
 docker run -p 8080:80 portfolio:local
 # Open http://localhost:8080
-\`\`\`
-
+```
 ## Deploying (done automatically by CI/CD on push to main)
 
-\`\`\`bash
+```bash
 helm upgrade --install portfolio helm/portfolio/ \
   --namespace portfolio \
   --set image.tag=sha-XXXXXXX \
   --set ingress.host=sumedhvartak.pp.ua \
   --atomic --wait
-\`\`\`
+```
 
 ## Rollback
 
-\`\`\`bash
+```bash
 helm history portfolio -n portfolio   # list all releases
 helm rollback portfolio 1 -n portfolio --wait
-\`\`\`
+```
 
 ---
 
