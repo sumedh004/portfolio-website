@@ -6,7 +6,7 @@ RUN rm -rf /usr/share/nginx/html/*
 # Copy your site files into the nginx serving directory
 COPY index.html /usr/share/nginx/html/
 COPY style.css /usr/share/nginx/html/
-# COPY assets/ /usr/share/nginx/html/assets/
+COPY assets/ /usr/share/nginx/html/assets/
 
 # Copy custom nginx config
 COPY nginx.conf /etc/nginx/conf.d/default.conf

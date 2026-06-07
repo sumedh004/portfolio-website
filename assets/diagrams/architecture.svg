@@ -1,0 +1,167 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="720" viewBox="0 0 680 720" role="img">
+<title>Portfolio architecture diagram</title>
+<desc>Full CI/CD and hosting architecture: developer laptop pushes to GitHub, GitHub Actions builds a linux/arm64 Docker image, pushes to GHCR, then deploys via Helm to a K3s cluster on Oracle Cloud Always Free. Cloudflare DNS and Let's Encrypt TLS sit in front of the cluster.</desc>
+
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    .th  { font-size: 14px; font-weight: 500; fill: #1a1a1a; }
+    .ts  { font-size: 12px; font-weight: 400; fill: #6b6b6b; }
+    .arr { fill: none; stroke: #888780; stroke-width: 1; }
+
+    /* gray */
+    .c-gray rect  { fill: #F1EFE8; stroke: #5F5E5A; }
+    .c-gray .th   { fill: #2C2C2A; }
+    .c-gray .ts   { fill: #5F5E5A; }
+
+    /* purple */
+    .c-purple rect { fill: #EEEDFE; stroke: #534AB7; }
+    .c-purple .th  { fill: #26215C; }
+    .c-purple .ts  { fill: #534AB7; }
+    .c-purple-outer rect { fill: #EEEDFE; stroke: #534AB7; }
+    .c-purple-outer .th  { fill: #26215C; }
+    .c-purple-outer .ts  { fill: #534AB7; }
+
+    /* amber */
+    .c-amber rect { fill: #FAEEDA; stroke: #854F0B; }
+    .c-amber .th  { fill: #412402; }
+    .c-amber .ts  { fill: #854F0B; }
+
+    /* teal */
+    .c-teal rect { fill: #E1F5EE; stroke: #0F6E56; }
+    .c-teal .th  { fill: #04342C; }
+    .c-teal .ts  { fill: #0F6E56; }
+
+    /* coral */
+    .c-coral rect { fill: #FAECE7; stroke: #993C1D; }
+    .c-coral .th  { fill: #4A1B0C; }
+    .c-coral .ts  { fill: #993C1D; }
+    .c-coral-outer rect { fill: #FAECE7; stroke: #993C1D; }
+    .c-coral-outer .th  { fill: #4A1B0C; }
+    .c-coral-outer .ts  { fill: #993C1D; }
+  </style>
+</defs>
+
+<!-- ── ROW 1: Developer ─────────────────────────────────── -->
+<g class="c-gray">
+  <rect x="270" y="24" width="140" height="44" rx="8" stroke-width="0.5"/>
+  <text class="th" x="340" y="42" text-anchor="middle" dominant-baseline="central">Developer laptop</text>
+  <text class="ts" x="340" y="58" text-anchor="middle" dominant-baseline="central">git push origin main</text>
+</g>
+
+<line x1="340" y1="68" x2="340" y2="98" class="arr" marker-end="url(#arrow)"/>
+<text class="ts" x="354" y="87" dominant-baseline="central">push</text>
+
+<!-- ── ROW 2: GitHub outer ────────────────────────────── -->
+<g class="c-purple-outer">
+  <rect x="100" y="98" width="480" height="138" rx="12" stroke-width="0.5"/>
+  <text class="th" x="340" y="118" text-anchor="middle" dominant-baseline="central">GitHub</text>
+</g>
+
+<!-- Build job -->
+<g class="c-purple">
+  <rect x="120" y="130" width="196" height="88" rx="8" stroke-width="0.5"/>
+  <text class="th" x="218" y="152" text-anchor="middle" dominant-baseline="central">Build job</text>
+  <text class="ts" x="218" y="170" text-anchor="middle" dominant-baseline="central">docker buildx</text>
+  <text class="ts" x="218" y="186" text-anchor="middle" dominant-baseline="central">linux/arm64</text>
+  <text class="ts" x="218" y="202" text-anchor="middle" dominant-baseline="central">push → GHCR</text>
+</g>
+
+<line x1="316" y1="174" x2="364" y2="174" class="arr" marker-end="url(#arrow)"/>
+<text class="ts" x="340" y="167" text-anchor="middle">on success</text>
+
+<!-- Deploy job -->
+<g class="c-purple">
+  <rect x="364" y="130" width="196" height="88" rx="8" stroke-width="0.5"/>
+  <text class="th" x="462" y="152" text-anchor="middle" dominant-baseline="central">Deploy job</text>
+  <text class="ts" x="462" y="170" text-anchor="middle" dominant-baseline="central">helm upgrade</text>
+  <text class="ts" x="462" y="186" text-anchor="middle" dominant-baseline="central">--install --atomic</text>
+  <text class="ts" x="462" y="202" text-anchor="middle" dominant-baseline="central">auto-rollback</text>
+</g>
+
+<!-- ── GHCR ────────────────────────────────────────────── -->
+<line x1="316" y1="152" x2="598" y2="152" class="arr" marker-end="url(#arrow)"/>
+<g class="c-gray">
+  <rect x="600" y="128" width="68" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="634" y="148" text-anchor="middle" dominant-baseline="central">GHCR</text>
+  <text class="ts" x="634" y="166" text-anchor="middle" dominant-baseline="central">arm64 image</text>
+</g>
+
+<path d="M634 184 L634 360 L568 360" fill="none" stroke="#888780" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+<text class="ts" x="648" y="278" dominant-baseline="central">image pull</text>
+
+<!-- ── ROW 3: Supporting services ─────────────────────── -->
+<line x1="462" y1="236" x2="462" y2="284" class="arr" marker-end="url(#arrow)"/>
+<text class="ts" x="477" y="263" dominant-baseline="central">kubectl / Helm</text>
+
+<g class="c-amber">
+  <rect x="24" y="260" width="130" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="89" y="280" text-anchor="middle" dominant-baseline="central">Cloudflare DNS</text>
+  <text class="ts" x="89" y="298" text-anchor="middle" dominant-baseline="central">DNS only (grey)</text>
+</g>
+
+<g class="c-teal">
+  <rect x="24" y="332" width="130" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="89" y="352" text-anchor="middle" dominant-baseline="central">Let's Encrypt</text>
+  <text class="ts" x="89" y="370" text-anchor="middle" dominant-baseline="central">cert-manager / TLS</text>
+</g>
+
+<line x1="154" y1="288" x2="192" y2="316" class="arr" marker-end="url(#arrow)"/>
+<line x1="154" y1="360" x2="192" y2="378" class="arr" marker-end="url(#arrow)"/>
+
+<!-- ── Oracle Cloud boundary ──────────────────────────── -->
+<g class="c-coral-outer">
+  <rect x="194" y="284" width="388" height="320" rx="16" stroke-width="0.5"/>
+  <text class="th" x="388" y="308" text-anchor="middle" dominant-baseline="central">Oracle Cloud Always Free</text>
+  <text class="ts" x="388" y="326" text-anchor="middle" dominant-baseline="central">VCN 10.0.0.0/16 · ARM64 · $0/month</text>
+</g>
+
+<!-- k3s-control -->
+<g class="c-coral">
+  <rect x="214" y="344" width="164" height="100" rx="8" stroke-width="0.5"/>
+  <text class="th" x="296" y="366" text-anchor="middle" dominant-baseline="central">k3s-control</text>
+  <text class="ts" x="296" y="384" text-anchor="middle" dominant-baseline="central">K3s control plane</text>
+  <text class="ts" x="296" y="400" text-anchor="middle" dominant-baseline="central">API server</text>
+  <text class="ts" x="296" y="416" text-anchor="middle" dominant-baseline="central">2 OCPU · 12 GB RAM</text>
+</g>
+
+<!-- k3s-worker -->
+<g class="c-coral">
+  <rect x="404" y="344" width="164" height="100" rx="8" stroke-width="0.5"/>
+  <text class="th" x="486" y="366" text-anchor="middle" dominant-baseline="central">k3s-worker</text>
+  <text class="ts" x="486" y="384" text-anchor="middle" dominant-baseline="central">Traefik ingress</text>
+  <text class="ts" x="486" y="400" text-anchor="middle" dominant-baseline="central">portfolio pod × 2</text>
+  <text class="ts" x="486" y="416" text-anchor="middle" dominant-baseline="central">2 OCPU · 12 GB RAM</text>
+</g>
+
+<line x1="378" y1="394" x2="402" y2="394" class="arr" marker-end="url(#arrow)"/>
+<text class="ts" x="390" y="386" text-anchor="middle">schedule</text>
+
+<!-- Helm release -->
+<g class="c-coral">
+  <rect x="214" y="466" width="354" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="391" y="486" text-anchor="middle" dominant-baseline="central">Helm release: portfolio</text>
+  <text class="ts" x="391" y="504" text-anchor="middle" dominant-baseline="central">Deployment · Service · Ingress · PDB · Middlewares</text>
+</g>
+
+<!-- cert-manager -->
+<g class="c-coral">
+  <rect x="214" y="540" width="354" height="44" rx="8" stroke-width="0.5"/>
+  <text class="th" x="391" y="558" text-anchor="middle" dominant-baseline="central">cert-manager</text>
+  <text class="ts" x="391" y="574" text-anchor="middle" dominant-baseline="central">ACME HTTP-01 · auto-renews at 60 days</text>
+</g>
+
+<!-- ── ROW 5: Browser ──────────────────────────────────── -->
+<line x1="388" y1="604" x2="388" y2="644" class="arr" marker-end="url(#arrow)"/>
+<text class="ts" x="404" y="627" dominant-baseline="central">HTTPS :443</text>
+
+<g class="c-gray">
+  <rect x="270" y="644" width="236" height="44" rx="8" stroke-width="0.5"/>
+  <text class="th" x="388" y="658" text-anchor="middle" dominant-baseline="central">Browser</text>
+  <text class="ts" x="388" y="676" text-anchor="middle" dominant-baseline="central">https://yourname.pp.ua</text>
+</g>
+
+</svg>

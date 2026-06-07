@@ -18,6 +18,7 @@
       <li><a href="#skills">Skills</a></li>
       <li><a href="#experience">Experience</a></li>
       <li><a href="#projects">Projects</a></li>
+      <li><a href="#architecture">Architecture</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </nav>
@@ -209,6 +210,44 @@
         </div>
       </div>
 
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ARCHITECTURE ══════════════════════════════════ -->
+<section class="section section-alt" id="architecture">
+  <div class="container">
+    <h2>How this site is deployed</h2>
+    <p class="arch-intro">
+      This portfolio runs on a self-managed Kubernetes cluster (K3s) on
+      Oracle Cloud Always Free infrastructure — zero monthly cost.
+      Every <code>git push</code> to main triggers a full CI/CD pipeline:
+      Docker build, push to GHCR, and a Helm-managed rolling deploy to the cluster.
+    </p>
+    <div class="arch-diagram-wrap">
+      <img
+        src="assets/diagrams/architecture.svg"
+        alt="Architecture diagram showing git push through GitHub Actions to K3s cluster on Oracle Cloud"
+        class="arch-diagram"
+      >
+    </div>
+    <div class="arch-stats">
+      <div class="stat">
+        <span class="stat-value">0</span>
+        <span class="stat-label">Monthly cost</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">2</span>
+        <span class="stat-label">ARM VMs (always free)</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">~60s</span>
+        <span class="stat-label">Deploy time (cached)</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">100%</span>
+        <span class="stat-label">Automated rollback</span>
+      </div>
     </div>
   </div>
 </section>

@@ -143,3 +143,13 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   .hero h1 { font-size: 32px; }
   .nav-links { display: none; }
 }
+
+/* ARCHITECTURE SECTION */
+.arch-intro { font-size: 15px; color: var(--text-muted); max-width: 640px; margin-bottom: 24px; line-height: 1.7; }
+.arch-intro code { font-family: monospace; font-size: 13px; background: var(--bg); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border); }
+.arch-diagram-wrap { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 28px; background: var(--bg); }
+.arch-diagram { width: 100%; height: auto; display: block; }
+.arch-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; }
+.stat { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px 20px; text-align: center; }
+.stat-value { display: block; font-size: 28px; font-weight: 700; color: var(--accent); }
+.stat-label { display: block; font-size: 12px; color: var(--text-muted); margin-top: 4px; }
