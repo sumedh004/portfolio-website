@@ -7,14 +7,14 @@
 }
 
 :root {
-  --bg: #f6f3eb; /* page background */
-  --bg-alt: #ece7dc; /* cards, sections, alternate backgrounds */
-  --text: #1e1b18; /* main text */
-  --text-muted: #6b645c; /* secondary text */
-  --border: #d7cfc2; /* borders */
+  --bg: #f7f8fa; /* page background */
+  --bg-alt: #eef1f5; /* cards, sections, alternate backgrounds */
+  --text: #1c1f24; /* main text */
+  --text-muted: #6b7280; /* secondary text */
+  --border: #e5e7eb; /* borders */
 
-  --accent: #b85c38; /* primary buttons, highlights, links */
-  --accent-light: #f3dfd5; /* light accent for hover, badges */
+  --accent: #0f766e; /* primary buttons, highlights, links */
+  --accent-light: #ccfbf1; /* light accent for hover, badges */
 
   --aws-color: #ff9900; /* AWS badge color */
   --tf-color: #556b4f; /* Terraform / secondary badge color */
@@ -266,8 +266,8 @@ body {
   gap: 8px;
 }
 .tag {
-  background: rgba(184, 92, 56, 0.08);
-  border: 1px solid rgba(184, 92, 56, 0.2);
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.2);
   color: var(--text);
 }
 
