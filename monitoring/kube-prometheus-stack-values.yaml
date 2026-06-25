@@ -99,10 +99,12 @@ alertmanager:
         memory: 128Mi
 
 # ── Grafana ───────────────────────────────────────────
-# Minimal config for now — full setup in Week 10
 grafana:
   enabled: true
-  adminPassword: "changeme-week10"
+  admin:
+    existingSecret: grafana-admin-secret
+    userKey: admin-user
+    passwordKey: admin-password
   resources:
     requests:
       cpu: 100m
@@ -114,6 +116,8 @@ grafana:
     enabled: true
     storageClassName: local-path
     size: 2Gi
-  # We'll add Ingress for Grafana in Week 10
   service:
     type: ClusterIP
+  # Grafana Ingress — handled separately below via additional values
+  ingress:
+    enabled: false
