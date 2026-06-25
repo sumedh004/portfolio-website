@@ -61,7 +61,6 @@ spec:
             preStop:
               exec:
                 command: ["/bin/sh", "-c", "sleep 5"]
-      terminationGracePeriodSeconds: 30
 
       {{- if .Values.nginxExporter.enabled }}
         - name: nginx-exporter
@@ -75,3 +74,6 @@ spec:
           resources:
             {{- toYaml .Values.nginxExporter.resources | nindent 12 }}
       {{- end }}
+      terminationGracePeriodSeconds: 30
+
+
