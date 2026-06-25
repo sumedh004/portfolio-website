@@ -54,3 +54,14 @@ topologySpread:
 
 autoscaling:
   enabled: false
+
+nginxExporter:
+  enabled: true
+  image: nginx/nginx-prometheus-exporter:1.1.0
+  resources:
+    requests:
+      cpu: 10m
+      memory: 16Mi
+    limits:
+      cpu: 50m
+      memory: 32Mi

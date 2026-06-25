@@ -1,0 +1,119 @@
+# ═══════════════════════════════════════════════════════
+# kube-prometheus-stack values override for K3s on ARM64
+# Oracle Cloud Always Free — 2x ARM64 VMs
+# ═══════════════════════════════════════════════════════
+
+# ── Prometheus ───────────────────────────────────────
+prometheus:
+  prometheusSpec:
+    # Retain 7 days of metrics — enough for a personal cluster
+    retention: 7d
+    # Persistent storage using K3s local-path provisioner
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: local-path
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 5Gi
+    # Reduced resources for ARM64 free-tier nodes
+    resources:
+      requests:
+        cpu: 200m
+        memory: 400Mi
+      limits:
+        cpu: 500m
+        memory: 800Mi
+    # Allow Prometheus to scrape ServiceMonitors from all namespaces
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
+    ruleSelectorNilUsesHelmValues: false
+
+# ── K3s-specific scrape fixes ────────────────────────
+# K3s runs controller-manager and scheduler as part of the k3s binary
+# These components do not expose separate metrics endpoints
+# Disable the default ServiceMonitors that would show as DOWN
+kubeControllerManager:
+  enabled: false
+
+kubeScheduler:
+  enabled: false
+
+# K3s uses a different port for kube-proxy metrics (disabled by default)
+kubeProxy:
+  enabled: false
+
+# K3s etcd is embedded — not accessible via the standard endpoint
+kubeEtcd:
+  enabled: false
+
+# K3s API server metrics ARE available — keep this enabled
+# but point it at the correct K3s endpoint
+kubeApiServer:
+  enabled: true
+
+# ── node-exporter ────────────────────────────────────
+nodeExporter:
+  enabled: true
+
+prometheus-node-exporter:
+  resources:
+    requests:
+      cpu: 50m
+      memory: 30Mi
+    limits:
+      cpu: 100m
+      memory: 60Mi
+  # Tolerate running on control plane node
+  tolerations:
+    - operator: "Exists"
+
+# ── kube-state-metrics ───────────────────────────────
+kube-state-metrics:
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi
+
+# ── Alertmanager ─────────────────────────────────────
+alertmanager:
+  alertmanagerSpec:
+    storage:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: local-path
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 1Gi
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
+
+# ── Grafana ───────────────────────────────────────────
+# Minimal config for now — full setup in Week 10
+grafana:
+  enabled: true
+  adminPassword: "changeme-week10"
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+  persistence:
+    enabled: true
+    storageClassName: local-path
+    size: 2Gi
+  # We'll add Ingress for Grafana in Week 10
+  service:
+    type: ClusterIP

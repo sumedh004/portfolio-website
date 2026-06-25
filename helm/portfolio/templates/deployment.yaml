@@ -62,3 +62,16 @@ spec:
               exec:
                 command: ["/bin/sh", "-c", "sleep 5"]
       terminationGracePeriodSeconds: 30
+
+      {{- if .Values.nginxExporter.enabled }}
+        - name: nginx-exporter
+          image: "{{ .Values.nginxExporter.image }}"
+          args:
+            - "-nginx.scrape-uri=http://localhost/nginx_status"
+          ports:
+            - name: metrics
+              containerPort: 9113
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.nginxExporter.resources | nindent 12 }}
+      {{- end }}
