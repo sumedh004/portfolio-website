@@ -29,6 +29,8 @@ prometheus:
     serviceMonitorSelectorNilUsesHelmValues: false
     podMonitorSelectorNilUsesHelmValues: false
     ruleSelectorNilUsesHelmValues: false
+    image:
+      tag: v2.51.0
 
 # ── K3s-specific scrape fixes ────────────────────────
 # K3s runs controller-manager and scheduler as part of the k3s binary

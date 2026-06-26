@@ -1,8 +1,8 @@
-{{- if or .Values.nginxExporter.enabled .Values.metricsExporter.enabled }}
+{{- if .Values.nginxExporter.enabled }}
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ include "portfolio.fullname" . }}
+  name: {{ include "portfolio.fullname" . }}-nginx
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "portfolio.labels" . | nindent 4 }}
@@ -15,14 +15,29 @@ spec:
     matchNames:
       - {{ .Release.Namespace }}
   endpoints:
-    {{- if .Values.nginxExporter.enabled }}
     - port: metrics
       path: /metrics
       interval: 30s
-    {{- end }}
-    {{- if .Values.metricsExporter.enabled }}
+{{- end }}
+{{- if .Values.metricsExporter.enabled }}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "portfolio.fullname" . }}-app
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "portfolio.labels" . | nindent 4 }}
+    release: kube-prometheus-stack
+spec:
+  selector:
+    matchLabels:
+      {{- include "portfolio.selectorLabels" . | nindent 6 }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  endpoints:
     - port: app-metrics
       path: /metrics
       interval: 15s
-    {{- end }}
 {{- end }}

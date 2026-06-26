@@ -3,7 +3,7 @@ replicaCount: 2
 image:
   repository: ghcr.io/sumedh004/portfolio
   tag: latest
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 imagePullSecrets:
   - name: ghcr-secret
