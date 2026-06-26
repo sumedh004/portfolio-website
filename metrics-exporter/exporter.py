@@ -51,12 +51,12 @@ PARSE_ERRORS = Counter(
 # '$remote_addr - $remote_user [$time_local] "$request" $status
 #  $body_bytes_sent "$http_referer" "$http_user_agent" rt=$request_time'
 LOG_PATTERN = re.compile(
-    r'(?P\S+) - \S+ \[.*?\] '
-    r'"(?P\S+) (?P\S+) \S+" '
-    r'(?P\d{3}) '
-    r'(?P\d+) '
+    r'(?P<remote_addr>\S+) - \S+ \[.*?\] '
+    r'"(?P<method>\S+) (?P<path>\S+) \S+" '
+    r'(?P<status>\d{3}) '
+    r'(?P<bytes_sent>\d+) '
     r'".*?" ".*?" '
-    r'rt=(?P[\d.]+)'
+    r'rt=(?P<request_time>[\d.]+)'
 )
 
 # Normalise paths — collapse IDs and hashes to avoid high cardinality
