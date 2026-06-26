@@ -16,7 +16,7 @@ spec:
       - {{ .Release.Namespace }}
   endpoints:
     {{- if .Values.nginxExporter.enabled }}
-    - port: nginx-metrics
+    - port: metrics
       path: /metrics
       interval: 30s
     {{- end }}
