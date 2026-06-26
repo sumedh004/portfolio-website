@@ -33,6 +33,9 @@ spec:
             matchLabels:
               {{- include "portfolio.selectorLabels" . | nindent 14 }}
       {{- end }}
+      volumes:
+        - name: nginx-logs
+          emptyDir: {}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -41,6 +44,9 @@ spec:
             - name: http
               containerPort: 80
               protocol: TCP
+          volumeMounts:
+            - name: nginx-logs
+              mountPath: /var/log/nginx
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           livenessProbe:
@@ -61,19 +67,34 @@ spec:
             preStop:
               exec:
                 command: ["/bin/sh", "-c", "sleep 5"]
-
-      {{- if .Values.nginxExporter.enabled }}
+        {{- if .Values.nginxExporter.enabled }}
         - name: nginx-exporter
           image: "{{ .Values.nginxExporter.image }}"
           args:
             - "-nginx.scrape-uri=http://localhost/nginx_status"
           ports:
-            - name: metrics
+            - name: nginx-metrics
               containerPort: 9113
               protocol: TCP
           resources:
             {{- toYaml .Values.nginxExporter.resources | nindent 12 }}
-      {{- end }}
+        {{- end }}
+        {{- if .Values.metricsExporter.enabled }}
+        - name: metrics-exporter
+          image: "{{ .Values.metricsExporter.image }}"
+          env:
+            - name: NGINX_LOG_PATH
+              value: /var/log/nginx/access.log
+            - name: METRICS_PORT
+              value: "8000"
+          ports:
+            - name: app-metrics
+              containerPort: 8000
+              protocol: TCP
+          volumeMounts:
+            - name: nginx-logs
+              mountPath: /var/log/nginx
+          resources:
+            {{- toYaml .Values.metricsExporter.resources | nindent 12 }}
+        {{- end }}
       terminationGracePeriodSeconds: 30
-
-

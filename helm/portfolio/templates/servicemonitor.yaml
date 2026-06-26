@@ -1,4 +1,4 @@
-{{- if .Values.nginxExporter.enabled }}
+{{- if or .Values.nginxExporter.enabled .Values.metricsExporter.enabled }}
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
@@ -6,7 +6,6 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "portfolio.labels" . | nindent 4 }}
-    # This label lets the kube-prometheus-stack operator find this ServiceMonitor
     release: kube-prometheus-stack
 spec:
   selector:
@@ -16,7 +15,14 @@ spec:
     matchNames:
       - {{ .Release.Namespace }}
   endpoints:
-    - port: metrics
+    {{- if .Values.nginxExporter.enabled }}
+    - port: nginx-metrics
       path: /metrics
       interval: 30s
+    {{- end }}
+    {{- if .Values.metricsExporter.enabled }}
+    - port: app-metrics
+      path: /metrics
+      interval: 15s
+    {{- end }}
 {{- end }}

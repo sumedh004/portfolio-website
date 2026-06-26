@@ -39,6 +39,10 @@ jobs:
             type=sha,prefix=sha-,format=short
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
 
+      - name: Get short SHA
+        id: sha
+        run: echo "short=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+
       - id: build-push
         uses: docker/build-push-action@v5
         with:
@@ -47,6 +51,19 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # Build and push metrics exporter sidecar image
+      - name: Build and push metrics exporter image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./metrics-exporter
+          platforms: linux/arm64
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/portfolio-metrics-exporter:sha-${{ steps.sha.outputs.short }}
+            ghcr.io/${{ github.repository_owner }}/portfolio-metrics-exporter:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 

@@ -15,7 +15,13 @@ spec:
       targetPort: http
 
     {{- if .Values.nginxExporter.enabled }}
-    - name: metrics
+    - name: nginx-metrics
       port: 9113
-      targetPort: metrics
+      targetPort: nginx-metrics
+    {{- end }}
+
+    {{- if .Values.metricsExporter.enabled }}
+    - name: app-metrics
+      port: 8000
+      targetPort: app-metrics
     {{- end }}
