@@ -84,6 +84,9 @@ kube-state-metrics:
 # ── Alertmanager ─────────────────────────────────────
 alertmanager:
   alertmanagerSpec:
+    alertmanagerConfigSelector:
+      matchLabels:
+        release: kube-prometheus-stack
     storage:
       volumeClaimTemplate:
         spec:
