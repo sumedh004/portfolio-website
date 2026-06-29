@@ -115,7 +115,24 @@ helm upgrade --install portfolio helm/portfolio/ \
 helm history portfolio -n portfolio   # list all releases
 helm rollback portfolio 1 -n portfolio --wait
 ```
+## Manual steps after cluster rebuild
 
+These steps are not automated by the CI/CD pipeline and must be
+run manually when rebuilding the cluster:
+
+1. GHCR image pull secret:
+   kubectl create secret docker-registry ghcr-secret \
+     --namespace=portfolio \
+     --docker-server=ghcr.io \
+     --docker-username=YOURUSERNAME \
+     --docker-password=YOUR_GHCR_TOKEN
+
+2. Alertmanager Slack webhook secret:
+   kubectl create secret generic \
+     alertmanager-kube-prometheus-stack-alertmanager \
+     --namespace monitoring \
+     --from-file=alertmanager.yaml=/path/to/alertmanager.yaml
+   (alertmanager.yaml contains the Slack webhook URL — keep it secure)
 ---
 
 ## What's coming next (Phase 2)
