@@ -73,7 +73,7 @@
 
 /* Light theme-specific overrides */
 
-.light-theme body {
+/* .light-theme body {
   background:
     radial-gradient(
       circle at 85% 0%,
@@ -81,6 +81,33 @@
       transparent 32rem
     ),
     var(--bg);
+} */
+
+.light-theme body {
+  background:
+    radial-gradient(
+      ellipse at 20% 20%,
+      rgba(101, 214, 176, 0.12),
+      transparent 35%
+    ),
+    radial-gradient(
+      ellipse at 80% 30%,
+      rgba(8, 123, 184, 0.08),
+      transparent 35%
+    ),
+    radial-gradient(
+      ellipse at 30% 80%,
+      rgba(91, 79, 224, 0.06),
+      transparent 35%
+    ),
+    radial-gradient(
+      ellipse at 80% 90%,
+      rgba(101, 214, 176, 0.08),
+      transparent 35%
+    ),
+    var(--bg);
+
+  background-attachment: fixed;
 }
 
 .light-theme .site-header {
