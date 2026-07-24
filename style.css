@@ -43,8 +43,147 @@
   --font-mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
 }
 
-/* This design is intentionally dark-only — an ops console doesn't flip to
-   light mode, so no prefers-color-scheme override here. */
+/* LIGHT THEME */
+.light-theme {
+  /* BACKGROUNDS */
+  --bg: #f6f7fb;
+  --bg-alt: #ffffff;
+  --bg-raised: #eef1f6;
+
+  /* TEXT */
+  --text: #171a25;
+  --text-muted: #596174;
+  --text-faint: #7a8192;
+
+  /* BORDERS */
+  --border: #dfe3ec;
+  --border-bright: #c5cad6;
+
+  /* ACCENTS */
+  --accent: #5b4fe0;
+  --accent-dim: #e9e6ff;
+
+  --accent-2: #087bb8;
+  --accent-2-dim: #dff3ff;
+
+  /* BRAND / STATUS */
+  --status-ok: #168a6b;
+  --status-wip: #a96800;
+}
+
+/* Light theme-specific overrides */
+
+.light-theme body {
+  background:
+    radial-gradient(
+      circle at 82% 0%,
+      rgba(91, 79, 224, 0.08),
+      transparent 32rem
+    ),
+    var(--bg);
+}
+
+.light-theme .site-header {
+  background: rgba(246, 247, 251, 0.88);
+}
+
+.light-theme .btn-primary {
+  color: #ffffff;
+}
+
+.light-theme .badge-aws {
+  color: #a85c00;
+}
+
+.light-theme .badge-tf {
+  color: #4f7048;
+}
+
+.light-theme .award-badge {
+  color: #4f7048;
+}
+
+.light-theme .cert-icon-tf,
+.light-theme .cert-icon-aws {
+  color: #ffffff;
+}
+
+.light-theme .contact-link:hover {
+  background: var(--accent-dim);
+}
+
+/* THEME TOGGLE */
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 8px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-alt);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    background 0.15s,
+    color 0.15s;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.theme-toggle-track {
+  position: relative;
+  width: 30px;
+  height: 16px;
+  border-radius: 999px;
+  background: var(--border-bright);
+}
+
+.theme-toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--text);
+  transition: transform 0.2s ease;
+}
+
+.light-theme .theme-toggle-track {
+  background: var(--accent);
+}
+
+.light-theme .theme-toggle-thumb {
+  transform: translateX(14px);
+  background: #ffffff;
+}
+
+.theme-toggle-icon {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1;
+}
+
+.theme-toggle-sun {
+  opacity: 0.55;
+}
+
+.theme-toggle-moon {
+  opacity: 1;
+}
+
+.light-theme .theme-toggle-sun {
+  opacity: 1;
+}
+
+.light-theme .theme-toggle-moon {
+  opacity: 0.55;
+}
 
 html {
   scroll-behavior: smooth;
