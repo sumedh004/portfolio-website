@@ -9,32 +9,38 @@
 }
 
 :root {
-  --bg: #0a0d12;              /* ink void */
-  --bg-alt: #11151d;          /* raised panel */
-  --bg-raised: #161b25;       /* deeper panel, e.g. code blocks */
-  --text: #e8ecf1;
-  --text-muted: #8992a3;
-  --text-faint: #565f70;
-  --border: #232a38;
-  --border-bright: #333c50;
+  /* DEEP DIGITAL BASE */
+  --bg: #08090d;
+  --bg-alt: #10121a;
+  --bg-raised: #171a25;
 
-  --accent: #ffb454;          /* phosphor amber — primary signal */
-  --accent-dim: #4a3620;
-  --accent-2: #5ec9b8;        /* cool teal — secondary signal */
-  --accent-2-dim: #1c3a36;
+  /* TEXT */
+  --text: #f5f7ff;
+  --text-muted: #a5a9b8;
+  --text-faint: #666b7b;
+
+  /* BORDERS */
+  --border: #242836;
+  --border-bright: #383d4d;
+
+  /* ELECTRIC VIOLET + BLUE ACCENTS */
+  --accent: #7c6cff;
+  --accent-dim: #28234d;
+  --accent-2: #56b8ff;
+  --accent-2-dim: #18394f;
 
   --aws-color: #ff9900;
   --tf-color: #7c9473;
 
-  --status-ok: #5ec9b8;
-  --status-wip: #ffb454;
+  --status-ok: #65d6b0;
+  --status-wip: #f0bd68;
 
-  --radius: 3px;
-  --radius-lg: 4px;
+  --radius: 6px;
+  --radius-lg: 10px;
 
-  --font-display: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+  --font-display: 'DM Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
 }
 
 /* This design is intentionally dark-only — an ops console doesn't flip to
@@ -47,9 +53,12 @@ html {
 body {
   font-family: var(--font-body);
   background:
-    linear-gradient(var(--bg) 0%, var(--bg) 100%),
-    repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.025) 40px),
-    repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.025) 40px);
+    radial-gradient(
+      circle at 82% 0%,
+      rgba(124, 108, 255, 0.10),
+      transparent 32rem
+    ),
+    var(--bg);
   color: var(--text);
   line-height: 1.6;
   font-size: 16px;
@@ -69,8 +78,8 @@ body {
 .site-header {
   position: sticky;
   top: 0;
-  background: rgba(10, 13, 18, 0.85);
-  backdrop-filter: blur(8px);
+  background: rgba(8, 9, 13, 0.86);
+  backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
   z-index: 100;
 }
@@ -135,11 +144,11 @@ body {
 }
 .hero h1 {
   font-family: var(--font-display);
-  font-size: 40px;
-  font-weight: 700;
-  line-height: 1.2;
+  font-size: 44px;
+  font-weight: 600;
+  line-height: 1.08;
   margin-bottom: 18px;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.045em;
 }
 .hero-bio {
   font-size: 16px;
@@ -158,7 +167,7 @@ body {
   font-size: 11px;
   font-weight: 500;
   padding: 4px 10px;
-  border-radius: var(--radius);
+  border-radius: 999px;
   letter-spacing: 0.02em;
 }
 .badge-aws {
@@ -186,7 +195,7 @@ body {
   display: inline-flex;
   align-items: center;
   padding: 10px 20px;
-  border-radius: var(--radius);
+  border-radius: 999px;
   font-family: var(--font-mono);
   font-size: 13px;
   font-weight: 500;
@@ -195,11 +204,11 @@ body {
 }
 .btn-primary {
   background: var(--accent);
-  color: #0a0d12;
+  color: #08090d;
   border: 1px solid var(--accent);
 }
 .btn-primary:hover {
-  background: #ffc678;
+  background: #978cff;
   box-shadow: 0 0 0 3px var(--accent-dim);
 }
 .btn-secondary {
@@ -245,13 +254,13 @@ body {
   height: 8px;
   border-radius: 50%;
   background: var(--status-ok);
-  box-shadow: 0 0 0 0 rgba(94, 201, 184, 0.6);
+  box-shadow: 0 0 0 0 rgba(101, 214, 176, 0.55);
   animation: pulse 2.4s infinite;
 }
 @keyframes pulse {
-  0%   { box-shadow: 0 0 0 0 rgba(94, 201, 184, 0.55); }
-  70%  { box-shadow: 0 0 0 6px rgba(94, 201, 184, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(94, 201, 184, 0); }
+  0%   { box-shadow: 0 0 0 0 rgba(101, 214, 176, 0.55); }
+  70%  { box-shadow: 0 0 0 6px rgba(101, 214, 176, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(101, 214, 176, 0); }
 }
 
 /* ARCH CARD */
@@ -344,13 +353,13 @@ body {
   font-size: 12px;
   padding: 4px 10px;
   border-radius: var(--radius);
-  background: rgba(94, 201, 184, 0.08);
-  border: 1px solid rgba(94, 201, 184, 0.25);
+  background: rgba(86, 184, 255, 0.08);
+  border: 1px solid rgba(86, 184, 255, 0.25);
   color: var(--accent-2);
 }
 .section-alt .tag {
-  background: rgba(255, 180, 84, 0.08);
-  border-color: rgba(255, 180, 84, 0.28);
+  background: rgba(124, 108, 255, 0.08);
+  border-color: rgba(124, 108, 255, 0.28);
   color: var(--accent);
 }
 
@@ -454,17 +463,17 @@ body {
   text-transform: uppercase;
 }
 .status-live {
-  background: rgba(94, 201, 184, 0.1);
+  background: rgba(101, 214, 176, 0.10);
   color: var(--status-ok);
-  border: 1px solid rgba(94, 201, 184, 0.35);
+  border: 1px solid rgba(101, 214, 176, 0.35);
 }
 .status-live::before {
   content: "● ";
 }
 .status-wip {
-  background: rgba(255, 180, 84, 0.1);
+  background: rgba(240, 189, 104, 0.10);
   color: var(--status-wip);
-  border: 1px solid rgba(255, 180, 84, 0.35);
+  border: 1px solid rgba(240, 189, 104, 0.35);
 }
 .status-wip::before {
   content: "◐ ";
@@ -527,11 +536,11 @@ body {
 }
 .cert-icon-tf {
   background: var(--tf-color);
-  color: #0a0d12;
+  color: #08090d;
 }
 .cert-icon-aws {
   background: var(--aws-color);
-  color: #0a0d12;
+  color: #08090d;
 }
 .cert-info {
   flex: 1;
