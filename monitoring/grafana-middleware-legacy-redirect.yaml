@@ -1,0 +1,10 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: grafana-legacy-redirect
+  namespace: monitoring
+spec:
+  redirectRegex:
+    regex: "^https?://grafana\\.sumedhvartak\\.pp\\.ua/(.*)"
+    replacement: "https://grafana.sumedhv.com/${1}"
+    permanent: true

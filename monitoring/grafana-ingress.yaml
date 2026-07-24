@@ -6,13 +6,24 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "traefik"
     cert-manager.io/cluster-issuer: "letsencrypt-production"
-    traefik.ingress.kubernetes.io/router.middlewares: "monitoring-grafana-https-redirect@kubernetescrd"
+    traefik.ingress.kubernetes.io/router.middlewares: "monitoring-grafana-https-redirect@kubernetescrd,monitoring-grafana-legacy-redirect@kubernetescrd"
 spec:
   tls:
     - hosts:
+        - grafana.sumedhv.com
         - grafana.sumedhvartak.pp.ua
       secretName: grafana-tls
   rules:
+    - host: grafana.sumedhv.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kube-prometheus-stack-grafana
+                port:
+                  number: 80
     - host: grafana.sumedhvartak.pp.ua
       http:
         paths:
