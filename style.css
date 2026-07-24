@@ -45,23 +45,23 @@
 
 /* LIGHT THEME */
 .light-theme {
-  /* BACKGROUNDS */
-  --bg: #f6f7fb;
-  --bg-alt: #ffffff;
-  --bg-raised: #eef1f6;
+  /* WARM OFF-WHITE BACKGROUNDS */
+  --bg: #f4f1eb;
+  --bg-alt: #faf9f6;
+  --bg-raised: #eeebe4;
 
   /* TEXT */
-  --text: #171a25;
-  --text-muted: #596174;
-  --text-faint: #7a8192;
+  --text: #1c1b1a;
+  --text-muted: #68645e;
+  --text-faint: #96918a;
 
   /* BORDERS */
-  --border: #dfe3ec;
-  --border-bright: #c5cad6;
+  --border: #dedad2;
+  --border-bright: #c8c2b8;
 
   /* ACCENTS */
   --accent: #5b4fe0;
-  --accent-dim: #e9e6ff;
+  --accent-dim: #e8e5ff;
 
   --accent-2: #087bb8;
   --accent-2-dim: #dff3ff;
