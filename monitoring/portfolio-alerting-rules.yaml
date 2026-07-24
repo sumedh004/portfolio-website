@@ -75,7 +75,9 @@ spec:
 
         - alert: PodNotReady
           expr: |
-            kube_pod_status_ready{condition="true"} == 0
+            kube_pod_status_ready{condition="true"}
+            * on (namespace, pod) group_left(owner_kind)
+            kube_pod_owner{owner_kind!="Job"} == 0
           for: 5m
           labels:
             severity: warning

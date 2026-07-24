@@ -102,8 +102,10 @@ jobs:
             --namespace portfolio \
             --create-namespace \
             --set image.tag=sha-${{ steps.sha.outputs.short }} \
-            --set ingress.host=sumedhvartak.pp.ua \
-            --set ingress.wwwHost=www.sumedhvartak.pp.ua \
+            --set ingress.host=sumedhv.com \
+            --set ingress.wwwHost=www.sumedhv.com \
+            --set ingress.legacy.host=sumedhvartak.pp.ua \
+            --set ingress.legacy.wwwHost=www.sumedhvartak.pp.ua \
             --wait \
             --timeout 3m \
             --atomic
@@ -113,4 +115,5 @@ jobs:
         run: |
           helm list -n portfolio
           kubectl get pods -n portfolio
-          curl -sf https://sumedhvartak.pp.ua/healthz
+          curl -sf https://sumedhv.com/healthz
+          curl -sfIL https://sumedhvartak.pp.ua/healthz

@@ -18,8 +18,13 @@ service:
 ingress:
   enabled: true
   className: traefik
-  host: sumedhvartak.pp.ua
-  wwwHost: www.sumedhvartak.pp.ua
+  host: sumedhv.com
+  wwwHost: www.sumedhv.com
+  legacy:
+    enabled: true
+    host: sumedhvartak.pp.ua
+    wwwHost: www.sumedhvartak.pp.ua
+    secretName: portfolio-legacy-tls
   tls:
     enabled: true
     secretName: portfolio-tls
