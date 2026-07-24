@@ -318,27 +318,30 @@
 </footer>
 
 <script>
-  const themeToggle = document.getElementById("theme-toggle");
+const themeToggle = document.getElementById("theme-toggle");
 
-  const savedTheme = localStorage.getItem("theme");
+const savedTheme = localStorage.getItem("theme");
 
-  if (savedTheme === "light") {
-    document.documentElement.classList.add("light-theme");
-  }
+if (savedTheme === "light") {
+  document.documentElement.classList.add("light-theme");
+}
 
-  themeToggle.addEventListener("click", () => {
-    const isLight =
-      document.documentElement.classList.toggle("light-theme");
+themeToggle.addEventListener("click", () => {
+  const isLight =
+    document.documentElement.classList.toggle("light-theme");
 
-    localStorage.setItem("theme", isLight ? "light" : "dark");
+  localStorage.setItem(
+    "theme",
+    isLight ? "light" : "dark"
+  );
 
-    themeToggle.setAttribute(
-      "aria-label",
-      isLight
-        ? "Switch to dark theme"
-        : "Switch to light theme"
-    );
-  });
+  themeToggle.setAttribute(
+    "aria-label",
+    isLight
+      ? "Switch to dark theme"
+      : "Switch to light theme"
+  );
+});
 </script>
 
 </body>
