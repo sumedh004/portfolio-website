@@ -135,6 +135,26 @@ run manually when rebuilding the cluster:
    (alertmanager.yaml contains the Slack webhook URL — keep it secure)
 ---
 
+## Troubleshooting
+
+### Traefik port conflict blocking node exporter scheduling
+
+**Problem:** The node exporter DaemonSet could not schedule on the control
+node because Traefik was bound to port 9100, which node exporter needs as a
+host port.
+
+**Root cause:** Traefik was configured with
+`--entryPoints.metrics.address=:9100/tcp` by its Helm installation.
+
+**Fix:** Moved the Traefik metrics entrypoint to port 9101 through its Helm
+configuration, then deleted the pending node exporter pod so it could
+reschedule successfully.
+
+**Lesson:** Node exporter requires host port 9100. Any other process using
+that port on a node prevents the DaemonSet from scheduling there.
+
+---
+
 ## What's coming next (Phase 2)
 
 - Prometheus + Grafana observability stack
